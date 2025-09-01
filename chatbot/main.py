@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 # create an object "app" to handle all requests
 app = FastAPI()
@@ -9,3 +10,8 @@ def read_root():
     print("chatbot api backend is running")
     return {"message":"chatbot api backend is running"}
 
+
+# the class to define the structure of the type of data we expect to receive from the user
+# the API will expect something like a JSON file {"question": "string"}
+class Question(BaseModel):
+    question: str
