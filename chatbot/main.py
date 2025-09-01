@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel # FastAPI utilizes pydantic library to validate incoming data format
 
 # create an object "app" to handle all requests
 app = FastAPI()
@@ -15,3 +15,19 @@ def read_root():
 # the API will expect something like a JSON file {"question": "string"}
 class Question(BaseModel):
     question: str
+
+
+################
+## INCOMPLETE ##
+################
+
+# gets only packages containing POST requests. not GET.
+@app.post("/api/ask"):
+    def question_asked(Question):
+        
+
+        # return JSON to confirm for now
+        return {
+            "request status": "success",
+            "user request": Question
+        }
