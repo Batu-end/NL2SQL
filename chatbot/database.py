@@ -26,16 +26,12 @@ def get_secret():
     except ClientError as e:
         raise e
 
+    # The secret is a JSON string, so we load it into a Python dictionary
     secret = get_secret_value_response['SecretString']
-
-    # Your code goes here.
-
-
-query = str
+    return secret
 
 # function to run the SQL query from prompt
-# 
-def run_query(query):
+def run_query(query: str):
 
 
 
