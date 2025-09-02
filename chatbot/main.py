@@ -35,3 +35,5 @@ def question_asked(request: Question):
         "query": "SELECT * FROM cars WHERE model = 'Camry';",
         "user_request": request
     }
+
+
