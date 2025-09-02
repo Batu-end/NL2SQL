@@ -17,17 +17,21 @@ class Question(BaseModel):
     question: str
 
 
-################
-## INCOMPLETE ##
-################
+#########
+## WIP ##
+#########
 
 # gets only packages containing POST requests. not GET.
-@app.post("/api/ask"):
-    def question_asked(Question):
-        
+@app.post("/api/ask")
+def question_asked(request: Question):
+    user_question_string = request.question
+    print(f"Received question: {user_question_string}")
 
-        # return JSON to confirm for now
-        return {
-            "request status": "success",
-            "user request": Question
-        }
+    # return JSON to confirm for now
+    return {
+        "request_status": "success",
+        "hardcoded_answer": "hardcoded response for Toyota Camry",
+        "data": [{"id": 1, "make": "Toyota", "model": "Camry", "year": 2020, "price": "20000", "color": "blue"}],
+        "query": "SELECT * FROM cars WHERE model = 'Camry';",
+        "user_request": request
+    }
