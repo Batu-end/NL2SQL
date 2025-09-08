@@ -2,17 +2,18 @@ import psycopg2     # PostgreSQL database handler library for Python
 import boto3
 from botocore.exceptions import ClientError
 
+# info from RDS instance
 host_name = "database-1.cp0ec0oi4dp9.us-west-2.rds.amazonaws.com"
 user_name = "postgres"
 port = "5432"
 
-# fetch password from Secrets Manager
+# fetch password from Secrets Manager. straight from AWS guide.
 def get_secret():
 
+    """Fetches database credentials from AWS Secrets Manager."""
     secret_name = "nl2sql/initialdb"
     region_name = "us-west-2"
 
-    # Create a Secrets Manager client
     session = boto3.session.Session()
     client = session.client(
         service_name='secretsmanager',
@@ -26,12 +27,13 @@ def get_secret():
     except ClientError as e:
         raise e
 
-    # The secret is a JSON string, so we load it into a Python dictionary
     secret = get_secret_value_response['SecretString']
+
     return secret
 
 # function to run the SQL query from prompt
 def run_query(query: str):
+    """Connects to database and runs SQL query"""
 
 
 
