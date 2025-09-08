@@ -31,17 +31,18 @@ def get_secret():
 
     return secret
 
-# function to run the SQL query from prompt
+# function to run the SQL query from prompt.
+# from the Psycopg2 documentation: https://www.psycopg.org/docs/usage.html
 def run_query(query: str):
     """Connects to database and runs SQL query"""
 
+    conn = psycopg2.connect("dbname=test user=postgres")
+    cur = conn.cursor
 
+    cur.execute(query)
 
-
-
-
-
-
+    cur.close()
+    conn.close()
 
 
 
