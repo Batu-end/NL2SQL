@@ -1,11 +1,12 @@
 import psycopg2     # PostgreSQL database handler library for Python
 import boto3
 from botocore.exceptions import ClientError
+import json
 
 # info from RDS instance
-host_name = "database-1.cp0ec0oi4dp9.us-west-2.rds.amazonaws.com"
-user_name = "postgres"
-port = "5432"
+# host_name = "database-1.cp0ec0oi4dp9.us-west-2.rds.amazonaws.com"
+# user_name = "postgres"
+# port = "5432"
 
 # fetch password from Secrets Manager. straight from AWS guide.
 def get_secret():
@@ -27,52 +28,42 @@ def get_secret():
     except ClientError as e:
         raise e
 
-    secret = get_secret_value_response['SecretString']
+    secret = json.loads(get_secret_value_response['SecretString'])
 
     return secret
+
 
 # function to run the SQL query from prompt.
 # from the Psycopg2 documentation: https://www.psycopg.org/docs/usage.html
 def run_query(query: str):
     """Connects to database and runs SQL query"""
 
-    conn = psycopg2.connect("dbname=test user=postgres")
-    cur = conn.cursor
+    conn = None
 
-    cur.execute(query)
+    try:
+        creds = get_secret()
+        
+        conn = psycopg2.connect(database='postgres',
+                                user='postgres',
+                                password='password',
+                                host='postgres.cp0ec0oi4dp9.us-west-2.rds.amazonaws.com',
+                                port='5432')
+        
 
-    cur.close()
-    conn.close()
+        cursor = conn.cursor()
+        cursor.execute(query)
 
+        if cursor.description:
+            result = cursor.fetchall()
+        else:
+            result = "!! QUERY SUCCESSFUL !!"
 
-
-
-# # --- IMPORTANT ---
-# # For now, we will hardcode credentials. We will replace this with
-# # AWS Secrets Manager later.
-# DB_NAME = "your_db_name"
-# DB_USER = "your_username"
-# DB_PASSWORD = "your_password"
-# DB_HOST = "localhost" # This will be your RDS endpoint later
-# DB_PORT = "5432"
-
-# def run_query(query: str):
-#     """Connects to the database and runs a given SQL query."""
-#     try:
-#         conn = psycopg2.connect(
-#             dbname=DB_NAME,
-#             user=DB_USER,
-#             password=DB_PASSWORD,
-#             host=DB_HOST,
-#             port=DB_PORT
-#         )
-#         cursor = conn.cursor()
-#         cursor.execute(query)
-#         # For now, let's assume the query returns results
-#         result = cursor.fetchall()
-#         cursor.close()
-#         conn.close()
-#         return result
-#     except Exception as e:
-#         print(f"Database error: {e}")
-#         return None
+        cursor.close()
+        return result
+    
+    except Exception as e:
+        print(f"!! DATABASE CONNECTION ERROR: {e} !!")
+        return None
+    finally:
+        if conn is not None:
+            conn.close()
