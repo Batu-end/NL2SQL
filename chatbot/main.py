@@ -33,7 +33,7 @@ def question_asked(request: Question):
         "hardcoded_answer": "hardcoded response for Toyota Camry",
         "data": [{"id": 1, "make": "Toyota", "model": "Camry", "year": 2020, "price": "20000", "color": "blue"}],
         "query": "SELECT * FROM cars WHERE model = 'Camry';",
-        "user_request": request
+        "user_request": user_question_string
     }
 
 

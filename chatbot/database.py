@@ -12,7 +12,7 @@ import json
 def get_secret():
 
     """Fetches database credentials from AWS Secrets Manager."""
-    secret_name = "nl2sql/initialdb"
+    secret_name = "Ver2"
     region_name = "us-west-2"
 
     session = boto3.session.Session()
@@ -45,7 +45,7 @@ def run_query(query: str):
         
         conn = psycopg2.connect(database='postgres',
                                 user='postgres',
-                                password='password',
+                                password=creds['password'],
                                 host='postgres.cp0ec0oi4dp9.us-west-2.rds.amazonaws.com',
                                 port='5432')
         
