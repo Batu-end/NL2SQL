@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel # FastAPI utilizes pydantic library to validate incoming data format
 
+
 # create an object "app" to handle all requests
 app = FastAPI()
 
@@ -24,8 +25,10 @@ class Question(BaseModel):
 # gets only packages containing POST requests. not GET.
 @app.post("/api/ask")
 def question_asked(request: Question):
-    user_question_string = request.question
-    print(f"Received question: {user_question_string}")
+
+    user_question = request.question
+
+    print(f"Received question: {user_question}")
 
     # return JSON to confirm for now
     return {
@@ -33,7 +36,7 @@ def question_asked(request: Question):
         "hardcoded_answer": "hardcoded response for Toyota Camry",
         "data": [{"id": 1, "make": "Toyota", "model": "Camry", "year": 2020, "price": "20000", "color": "blue"}],
         "query": "SELECT * FROM cars WHERE model = 'Camry';",
-        "user_request": user_question_string
+        "user_request": user_question
     }
 
 

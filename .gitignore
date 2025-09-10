@@ -1,2 +1,5 @@
 venv/
 __pycache__/
+__test_agent.py/
+__test_database.py/
+
