@@ -1,14 +1,11 @@
 from strands import Agent
-# import boto3    # AWS's SDK services for Python
-from database import run_query
 from strands.models import BedrockModel
+from strands.tools import tool
+from database import run_query
 
-# bedrock_client = boto3.client(
-#     service_name='bedrock-runtime', 
-#     region_name='us-west-2'     # Oregon, since California doesn't have access to Bedrock
-# )
 
 # allows agent to interact with database
+@tool
 def execute_sql(sql_query: str) -> str:
     """
     Executes SQL query and returns a string by calling run_query function.
@@ -19,6 +16,7 @@ def execute_sql(sql_query: str) -> str:
 
     result = run_query(sql_query)
 
+    print(f"--- AGENT: Received from database: {result} ---") # see what agent receives
     return str(result)
 
 # 
@@ -56,10 +54,11 @@ def generate_response(user_prompt: str) -> str:
     )
 
     agent = Agent(
-        model=model, 
-        tools=[execute_sql]
+        model=model,
+        tools=[execute_sql],
     )
 
     response = agent(full_prompt)
-    print(response)
-    return response
+    final_text = response # will add indexing to receive only the true response later
+    # print(response)
+    return final_text
