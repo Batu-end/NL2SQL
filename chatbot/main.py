@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel # FastAPI utilizes pydantic library to validate incoming data format
-
+from agent import generate_response
 
 # create an object "app" to handle all requests
 app = FastAPI()
@@ -30,13 +30,8 @@ def question_asked(request: Question):
 
     print(f"Received question: {user_question}")
 
-    # return JSON to confirm for now
-    return {
-        "request_status": "success",
-        "hardcoded_answer": "hardcoded response for Toyota Camry",
-        "data": [{"id": 1, "make": "Toyota", "model": "Camry", "year": 2020, "price": "20000", "color": "blue"}],
-        "query": "SELECT * FROM cars WHERE model = 'Camry';",
-        "user_request": user_question
-    }
-
-
+    try:
+        final_answer = generate_response(user_question)
+        return final_answer
+    except Exception as e:
+        print(f"Error occured: {e}")
