@@ -1,12 +1,7 @@
+import json
 import psycopg2     # PostgreSQL database handler library for Python
 import boto3
 from botocore.exceptions import ClientError
-import json
-
-# info from RDS instance
-# host_name = "database-1.cp0ec0oi4dp9.us-west-2.rds.amazonaws.com"
-# user_name = "postgres"
-# port = "5432"
 
 # fetch password from Secrets Manager. straight from AWS guide.
 def get_secret():
@@ -58,6 +53,8 @@ def run_query(query: str):
         else:
             result = "!! QUERY SUCCESSFUL !!"
 
+        print(f"--- DATABASE: Query returned: {result} ---") # see what db returns
+
         cursor.close()
         return result
     
@@ -67,3 +64,4 @@ def run_query(query: str):
     finally:
         if conn is not None:
             conn.close()
+            print("--- DATABASE: Connection closed. ---")

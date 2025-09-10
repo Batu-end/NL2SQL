@@ -18,10 +18,6 @@ class Question(BaseModel):
     question: str
 
 
-#########
-## WIP ##
-#########
-
 # gets only packages containing POST requests. not GET.
 @app.post("/api/ask")
 def question_asked(request: Question):
