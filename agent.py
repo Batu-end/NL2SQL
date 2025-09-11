@@ -38,7 +38,8 @@ def generate_response(user_prompt: str) -> str:
     1. First, you must write a single, syntactically correct PostgreSQL query.
     2. Second, you must use the 'execute_sql' tool to run that query.
     3. Based on the results from the tool, answer the user's question in a clear, friendly sentence. Do not show the SQL query in your final answer.
-    4. Finally, always double check, and make sure you don't hallucinate.
+    4. IMPORTANT: For any text comparisons in a WHERE clause, you must use the LOWER() function to ensure the query is case-insensitive. For example, use LOWER(color) = 'red' instead of color = 'Red'.
+    5. Finally, always double check before you generate the SQL code, and make sure you don't hallucinate.
 
     Schema: {schema}
 
