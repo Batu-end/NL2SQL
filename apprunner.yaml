@@ -1,5 +1,5 @@
 version: 1.0 # version of the specification
-runtime: python312 # runtime to use
+runtime: python311 # runtime to use
 build:
   commands:
     build:
