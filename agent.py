@@ -2,6 +2,7 @@ from strands import Agent
 from strands.models import BedrockModel
 from strands.tools import tool
 from database import run_query
+import strands.types.content as types
 
 
 # allows agent to interact with database
@@ -20,7 +21,7 @@ def execute_sql(sql_query: str) -> str:
     return str(result)
 
 # 
-def generate_response(user_prompt: str) -> str:
+async def generate_response(user_prompt: str) -> types.Message:
 
     schema = """
     CREATE TABLE cars (
@@ -51,7 +52,7 @@ def generate_response(user_prompt: str) -> str:
         # **model_config
         max_tokens=512,
         model_id="anthropic.claude-3-5-sonnet-20240620-v1:0",
-        config={"region_name": "us-west-2"}
+        # config={"region_name": "us-west-2"}
     )
 
     agent = Agent(
@@ -62,4 +63,5 @@ def generate_response(user_prompt: str) -> str:
     response = agent(full_prompt)
     final_text = response # will add indexing to receive only the true response later
     # print(response)
-    return final_text
+    # print('\n\n--- AGENT: Final response to user:', final_text, '---\n\n')
+    return final_text.message
