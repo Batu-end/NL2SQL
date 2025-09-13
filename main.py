@@ -1,6 +1,9 @@
 from fastapi import FastAPI
+import uvicorn
 from pydantic import BaseModel # FastAPI utilizes pydantic library to validate incoming data format
 from agent import generate_response
+import os
+
 
 # create an object "app" to handle all requests
 app = FastAPI()
@@ -31,3 +34,13 @@ def question_asked(request: Question):
         return final_answer
     except Exception as e:
         print(f"Error occured: {e}")
+
+
+if __name__ == "__main__":
+    print("Starting web server...")
+    uvicorn.run(
+        app,
+        host="0.0.0.0",
+        port=int(os.getenv("PORT", 8080)),
+        proxy_headers=True
+    )
