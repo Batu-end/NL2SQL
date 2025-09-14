@@ -7,6 +7,7 @@ import os
 
 # create an object "app" to handle all requests
 app = FastAPI()
+print('FastAPI app created')
 
 # root url "/" visited, run this function (127.0.0.1:8000/)
 @app.get("/")
