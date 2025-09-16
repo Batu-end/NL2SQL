@@ -3,13 +3,15 @@ runtime: python311 # runtime to use
 build:
   commands:
     build:
-      - pip3 install -r requirements.txt # install dependencies
+      - python3 -m venv venv
+      - source venv/bin/activate
+      - pip install -r requirements.txt # install dependencies
 
   env: # define environment variables
     - name: PORT
       value: '8080'
 
 run:
-  command: uvicorn main:app --host 0.0.0.0 --port 8080 # command to run fastapi
+  command: fastapi run main.py --host 0.0.0.0 --port 8080 # command to run fastapi
   network:
     port: 8080 # port AppRunner will expose
