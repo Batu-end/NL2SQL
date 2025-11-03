@@ -72,8 +72,8 @@ The application follows a standard architecture, orchestrated by the AI agent.
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/YourUsername/YourRepo.git](https://github.com/YourUsername/YourRepo.git)
-cd YourRepo
+git clone https://github.com/Batu-end/NL2SQL.git
+cd NL2SQL
 ```
 
 ### 2. Environment
