@@ -5,6 +5,8 @@ The complex part, the syntax, is handled by the agent afterwards, where the agen
 
 The testing dataset were cars, which is why the examples will be car-related.
 
+---
+
 ## 🚀 Key Features
 
 * **Natural Language to SQL:** Translates plain English questions (e.g., "How many red cars are there?") into precise PostgreSQL queries.
@@ -14,20 +16,26 @@ The testing dataset were cars, which is why the examples will be car-related.
 * **Scalable:** Designed to be deployed on AWS App Runner, providing a scalable, serverless backend.
 * **Conversational Memory:** The agent remembers the context of the conversation up to 10 messages to answer follow-up questions.
 
+***As seen below, the database is also displayed within the app, along with the variable syntax for technical users.***
+
+<img src="images/database_visual.png" alt="data image" width="850"/>
+
+---  
+
 ## 🛠️ Tech Stack
 
 | Component | Technology | Purpose |
 | :--- | :--- | :--- |
 | **Backend** | **Python 3.11**, **FastAPI** | API backkend. |
 | **Server** | **Uvicorn** | Serves the FastAPI application in production. |
-| **AI Agent** | **Strands Agents** | Manages the core AI logic and tool use. |
+| **AI Agent** | [**Strands Agents**](https://strandsagents.com) | Manages the core AI logic and tool use. |
 | **AI Model** | **Amazon Bedrock (Claude Haiku 3.5)** | Provides the reasoning and language understanding. |
-| **Tooling** | **Strands Tools (`@tool`)** | Defines custom tools for the agent. |
-| **Database** | **PostgreSQL (AWS RDS)** | The structured relational database we are querying. |
-| **DB Driver** | **psycopg2** | The Python library for connecting to PostgreSQL. |
+| **Tooling** | [**Strands Tools `@tool`**](https://github.com/strands-agents/tools) | Defines custom tools for the agent. |
+| **Database** | **[PostgreSQL](https://www.postgresql.org/) (AWS RDS)** | The structured relational database we are querying. |
+| **DB Driver** | [**psycopg2**](https://www.psycopg.org/) | The Python library for connecting to PostgreSQL. |
 | **Cloud Hosting**| **AWS App Runner** | Runs the backend service in a serverless container. |
 | **Security** | **AWS Secrets Manager**, **IAM** | Secures database credentials and service permissions. |
-| **Frontend** | **React** | The user interface. Can be found at the [frontend repository](https://github.com/Batu-end/NL2SQL-front) |
+| **Frontend** | **NextJS** | The user interface. Can be found at the [frontend repository](https://github.com/Batu-end/NL2SQL-front) |
 
 ---
 
@@ -35,7 +43,7 @@ The testing dataset were cars, which is why the examples will be car-related.
 
 The application follows a standard architecture, orchestrated by the AI agent.
 
-1.  **Frontend (React):** The user sends a question from the React/web app.
+1.  **Frontend:** The user sends a question from the web app.
 2.  **API Backend (FastAPI on App Runner):** The FastAPI server receives the request at the endpoint.
 3.  **Agent (`agent.py`):** The API calls the `get_chatbot_response` function. This function:
     * Builds a prompt containing the user's question, conversation history, and the database schema.
@@ -46,6 +54,10 @@ The application follows a standard architecture, orchestrated by the AI agent.
 6.  **Security (Secrets Manager):** The agent first fetches the database credentials securely from AWS Secrets Manager.
 7.  **Database (RDS):** Connects to the PostgreSQL database on AWS RDS and executes the AI-generated query.
 8.  **Response:** The query result is passed back to the agent. The agent sends this result to Bedrock, which formats it into a human-friendly answer (e.g., "There are 2 red cars."). This final answer is sent back to the user's frontend.
+
+***See image below, for demonstration of the agent's memory capabilities.***
+
+<img src="images/3rd_car.png" alt="memory image" width="850"/>
 
 ---
 
@@ -65,7 +77,7 @@ cd YourRepo
 ```
 
 ### 2. Environment
-# Create a virtual environment
+#### Create a virtual environment
 ```
 python3 -m venv venv
 source venv/bin/activate
